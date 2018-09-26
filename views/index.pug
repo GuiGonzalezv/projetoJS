@@ -1,0 +1,53 @@
+include head
+	body
+		nav.navbar.navbar-dark.bg-dark
+			.container-fluid
+				a.navbar-brand(href='#') PasteBin
+				ul.nav.navbar-nav.pull-right
+					li
+						button.btn.btn-outline-default.my-2.my-sm-0 Servicos
+		
+		.container.mt-5
+			.card.text-center.bg-secondary
+				.card-header 
+					span(style="color: white") PasteBin
+				.card-body
+					.form-group.col-md-12
+						//- label(style="color: white") Titulo
+						input.form-control(type="text", name = "titulo",placeholder="Insira um titulo")
+					.form-group
+						textarea.form-group.col-md-12#text(name="textarea",rows="20", style="border:solid 1px orange;")
+					.form-group
+						label(for='exampleFormControlSelect1',name="expira", style="color: white") Expira em
+						select#expirated
+							option(val="#") Nenhum
+							option(val="5min") 5 min
+							option(val="10min") 10 min
+							option(val="1sem") 1 Semana
+							option(val="1mes") 1 Mes
+							option(val="1ano") 1 Ano
+				.card-footer.text-muted
+					button.btn-outline-default#btnSalvar Salvar
+						
+	
+	include footer
+
+	script.
+
+		$("#btnSalvar").on("click", function(){
+
+			data = {
+				titulo : $("#titulo").val(),
+				texto  : $("#text").val(),
+				data   : $("#expirated").val()
+			}
+
+			$.ajax({
+				url: "/save",
+				data: {dados: data}
+			})
+
+		})
+		//- $(document).ready(function(){
+		//- 	//- alert("hahahahahahahha")
+		//- })
