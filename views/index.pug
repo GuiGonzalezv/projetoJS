@@ -14,9 +14,11 @@ include head
 				.card-body
 					.form-group.col-md-12
 						//- label(style="color: white") Titulo
-						input.form-control(type="text", name = "titulo",placeholder="Insira um titulo")
+						input.form-control#titulo(type="text", name = "titulo",placeholder="Insira um titulo")
+						label.text-warning#errTitulo
 					.form-group
 						textarea.form-group.col-md-12#text(name="textarea",rows="20", style="border:solid 1px orange;")
+						label.text-warning#errTexto
 					.form-group
 						label(for='exampleFormControlSelect1',name="expira", style="color: white") Expira em
 						select#expirated
@@ -26,9 +28,28 @@ include head
 							option(val="1sem") 1 Semana
 							option(val="1mes") 1 Mes
 							option(val="1ano") 1 Ano
+						
+						
 				.card-footer.text-muted
 					button.btn-outline-default#btnSalvar Salvar
-						
+
+	
+		//- button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal')
+
+		button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#myModal') Open Modal
+		// Modal
+				
+		#myModal.modal.fade(role='dialog')
+			.modal-dialog
+				// Modal content
+				.modal-content
+					.modal-header
+						button.close(type='button', data-dismiss='modal') &times;
+						h4.modal-title Modal Header
+					.modal-body
+						p Some text in the modal.
+					.modal-footer
+						button.btn.btn-default(type='button', data-dismiss='modal') Close
 	
 	include footer
 
@@ -39,12 +60,24 @@ include head
 			data = {
 				titulo : $("#titulo").val(),
 				texto  : $("#text").val(),
-				data   : $("#expirated").val()
+				expira   : $("#expirated").val()
 			}
 
 			$.ajax({
 				url: "/save",
-				data: {dados: data}
+				data: data,
+				success: function(data){
+					if(data){
+						if(data.status == 404){
+							console.log(data.err)
+							$("#errTitulo").text(data.titulo)
+							$("#errTexto").text(data.texto)
+						}else{
+							alert(data.dados.link)
+						}
+						
+					}
+				}
 			})
 
 		})
