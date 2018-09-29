@@ -10,6 +10,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.all("/servicos", function(req, res){
+	res.render("analytics")
+})
+
 router.all("/save", function(req, res){
   
 	var dados = req.query
@@ -87,6 +91,27 @@ router.all("/save", function(req, res){
 
 
   
+})
+
+router.all("/:link", function(req, res){
+	var link = req.params.link
+
+	nosql.getDB(function(db){
+		db.collection("pasteBin").find({"link": link}).toArray(function(err, result){
+			data = result[0]
+			agora = new moment().toDate()
+			if(data){
+				if(data.expira > agora || data.expira == false){
+					res.render('link', data)
+				}else{
+					res.render("linkExpirado", {title: "Link Expirado..."})
+				}	
+			}else{
+				res.render("linkExpirado", {title: "Link não encontrado..."})
+			}
+			
+		})
+	})
 })
 
 module.exports = router;

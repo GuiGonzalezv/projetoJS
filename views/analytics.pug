@@ -1,0 +1,167 @@
+include head
+	body
+		nav.navbar.navbar-dark.bg-dark
+			.container-fluid
+				a.navbar-brand(href='#') PasteBin
+				ul.nav.navbar-nav.pull-right
+					li
+						a(href='/servicos')
+							button.btn.btn-outline-default.my-2.my-sm-0 Servicos
+		.container.mt-5.text-center
+			
+			h1.text-center.display-4 Analítico do site
+
+			.card.mt-5
+				.card-header.font-weight-bold Usuários
+				.card-body
+					center
+						.mt-5#usuarios(style="width:600px; height:400px;")
+						p.card-text.text-right 10 milhões de usuários/mês.
+
+			.card.mt-5
+				.card-header.font-weight-bold
+					| Escritas
+				.card-body
+					center
+						.mt-5#escritas(style="width:600px; height:400px;")
+						p.card-text.text-right 10 milhões de escritas/mês.
+
+			.card.mt-5.mb-5
+				.card-header.font-weight-bold
+					| Lidas
+				.card-body
+					center
+						//- p.card-text 10:1 read to write ratio.
+						.mt-5#lidas(style="width:600px; height:400px;")
+						p.card-text.text-right 100 milhões de lidas/mês.
+
+	script(src="/js/echart.js")
+
+
+	script.
+
+		var UsuariosChart = echarts.init(document.getElementById('usuarios'));
+		var escritasChart = echarts.init(document.getElementById('escritas'));
+		var lidasChart = echarts.init(document.getElementById('lidas'));
+
+		optionUsuarios = {
+			title: {
+				text: 'Analítico de Usuários/mês',
+				subtext: 'Escala de 10:1'
+			},
+		    tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross'
+				}
+			},
+			legend: {
+				data:['Usuários'],
+				x: 'right'
+				
+			},
+			xAxis: [
+				{
+					type: 'category',
+					data: ['Agosto', 'Setembro', 'Outubro' ,'Novembro', 'Dezembro']
+
+				}
+			],
+			yAxis: [
+				{
+					type: 'value'
+				}
+			],
+			series: [
+				{
+					name:'Usuários',
+					type:'line',
+					smooth: true,
+					data: [2.6, 1000000, 9.0, 226.4, 28.7]
+				}
+			]
+		};
+
+		optionEscritas = {
+			title: {
+				text: 'Analítico de Escritas/mês',
+				subtext: 'Escala de 10:1'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b}: {c} ({d}%)"
+			},
+			legend: {
+				orient: 'vertical',
+				x: 'right',
+				data: [ 'Agosto', 'Setembro', 'Outubro' ,'Novembro', 'Dezembro']
+			},
+			series: [
+				{
+					name:'Escritas',
+					type:'pie',
+					radius: ['50%', '70%'],
+					label: {
+						
+						emphasis: {
+							show: true,
+							textStyle: {
+								fontSize: '20',
+								fontWeight: 'bold'
+							}
+						}
+					},
+					data:[
+						{value:1000000, name:'Agosto'},
+						{value:1000000, name:'Setembro'},
+						{value:1000000, name:'Outubro'},
+						{value:1000000, name:'Novembro'},
+						{value:1000000, name:'Dezembro'}
+					]
+				}
+			]
+		};
+
+		optionLidas = {
+			title : {
+				text: 'Analítico de Lidas/mês',
+				subtext: 'Escala de 10:1'
+			},
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				type: 'scroll',
+				orient: 'vertical',
+				right: 10,
+				top: 20,
+				bottom: 20,
+				data: ['Agosto', 'Setembro', 'Outubro' ,'Novembro', 'Dezembro']
+			},
+			series : [
+				{
+					name: 'Lidas',
+					type: 'pie',
+					radius : '70%',
+					data: [
+						{name:"Agosto", value: 10000000},
+						{name:"Setembro", value: 10000000},
+						{name:"Outubro", value: 10000000},
+						{name:"Novembro", value: 10000000},
+						{name:"Dezembro", value: 10000000}
+					],
+					itemStyle: {
+						emphasis: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}
+			]
+		};
+
+		UsuariosChart.setOption(optionUsuarios);
+		escritasChart.setOption(optionEscritas);
+		lidasChart.setOption(optionLidas);

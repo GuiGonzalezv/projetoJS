@@ -5,12 +5,14 @@ include head
 				a.navbar-brand(href='#') PasteBin
 				ul.nav.navbar-nav.pull-right
 					li
-						button.btn.btn-outline-default.my-2.my-sm-0 Servicos
-		
+						a(href='/servicos')
+							button.btn.btn-outline-default.my-2.my-sm-0 Servicos
 		.container.mt-5
-			.card.text-center.bg-secondary
-				.card-header 
-					span(style="color: white") PasteBin
+
+			
+			.card.text-center.bg-dark
+				.card-header.font-weight-bold
+					h1.text-center.display-4(style="color: white") PasteBin
 				.card-body
 					.form-group.col-md-12
 						//- label(style="color: white") Titulo
@@ -32,7 +34,7 @@ include head
 					
 						
 				.card-footer.text-muted
-					button.btn-outline-default#btnSalvar Salvar
+					button.btn-success#btnSalvar Salvar
 
 	
 		//- button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal')
@@ -76,6 +78,7 @@ include head
 							$("#errGeral").text(data.dados.geral)
 						}else{
 							alert(data.dados.link)
+							location.assign('/'+data.dados.link)
 							$("#errTitulo").text("")
 							$("#errTexto").text("")
 							$("#errGeral").text("")

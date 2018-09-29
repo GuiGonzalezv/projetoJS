@@ -1,0 +1,28 @@
+include head
+	body
+		nav.navbar.navbar-dark.bg-dark
+			.container-fluid
+				a.navbar-brand(href='#') PasteBin
+				ul.nav.navbar-nav.pull-right
+					li
+						a(href='/servicos')
+							button.btn.btn-outline-default.my-2.my-sm-0 Servicos
+		
+		.container-fluid
+			h1.text-center.display-4.mt-5 #{title}
+			.col-md-12.text-center
+				button.btn.btn-success#btnNew.mt-5 Criar outro
+		
+
+	
+		
+	
+	include footer
+
+	script.
+
+		$("#btnNew").on("click", function(){
+
+			location.assign('/');
+
+		})
