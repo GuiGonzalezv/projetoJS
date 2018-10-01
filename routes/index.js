@@ -11,9 +11,59 @@ router.get('/', function(req, res, next) {
 });
 
 router.all("/servicos", function(req, res){
+	nosql.getDB(function(db){
+		var month = new moment().subtract(6, 'months').toDate()
+		var agora = new moment().toDate()
+		db.collection('pasteBin').aggregate([
+			{
+				$match: {
+					$and: [{
+						criadoEm: {
+							$gte: new Date(month),
+							$lte: new Date(agora)
+						}
+					}],
+				}
+			},
+			{
+				$group: {
+					_id: {
+						ano: {
+							$year: "$criadoEm"
+						},
+						mes: {
+							$month: "$criadoEm"
+						},
+						criado: "$criadoEm"
+					},
+					total: {$sum: 1}
+                                        
+				}
+			}
+			]).toArray(function(err, result){
+				data = result
+				var mes = ["teste", 'JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO']
+				if(err){
+					console.log("Error")
+				}else{
+
+					if(data.length > 0){
+						x = {}
+
+						data.map((e)=> {
+							x.push({anoMes: ano+mes})
+						})
+					}
+				}
+
+			})
+	})
 	res.render("analytics")
 })
 
+function mensalAnalytics(){
+	
+}
 router.all("/save", function(req, res){
   
 	var dados = req.query
